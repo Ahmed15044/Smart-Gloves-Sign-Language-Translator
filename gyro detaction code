@@ -1,0 +1,53 @@
+#include <Wire.h>
+#include <MPU6050.h>
+
+MPU6050 mpu;
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin(21,22);
+  mpu.initialize();
+}
+
+void loop() {
+
+  long axSum=0, aySum=0, azSum=0;
+  long gxSum=0, gySum=0, gzSum=0;
+
+  int16_t ax, ay, az, gx, gy, gz;
+
+  for(int i=0;i<20;i++) {
+
+    mpu.getMotion6(&ax,&ay,&az,&gx,&gy,&gz);
+
+    axSum += ax;
+    aySum += ay;
+    azSum += az;
+
+    gxSum += gx;
+    gySum += gy;
+    gzSum += gz;
+
+    delay(50);
+  }
+
+  Serial.print("AX=");
+  Serial.print(axSum/20);
+
+  Serial.print(" AY=");
+  Serial.print(aySum/20);
+
+  Serial.print(" AZ=");
+  Serial.print(azSum/20);
+
+  Serial.print(" GX=");
+  Serial.print(gxSum/20);
+
+  Serial.print(" GY=");
+  Serial.print(gySum/20);
+
+  Serial.print(" GZ=");
+  Serial.println(gzSum/20);
+
+  delay(1000);
+}
